@@ -4,6 +4,48 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+function getLanguageId(language: string): number {
+  const languageMap: { [key: string]: number } = {
+    javascript: 63,
+    python: 71,
+    cpp: 54,
+    java: 62,
+  };
+  return languageMap[language.toLowerCase()];
+}
+async function pollJudge0Result(token: string, apiKey: string) {
+  const judge0ResultUrl = `https://judge0.p.rapidapi.com/submissions/${token}?base64_encoded=false`;
+
+  while (true) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      const response = await axios.get(judge0ResultUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+          'x-rapidapi-key': apiKey,
+        },
+      });
+
+      if (!response.data || !response.data.status) {
+        throw new Error('Invalid response from Judge0 API');
+      }
+
+      const resultData = response.data;
+
+      if (resultData.status.id > 2) {
+        // i.e result is processed
+        return resultData;
+      }
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+    } catch (error) {
+      console.error(`Error polling Judge0 API for token ${token}`, error);
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+    }
+  }
+}
 const redisClient = createClient({
   url: process.env.REDIS_URL,
 });
@@ -47,37 +89,6 @@ async function processSubmission(submission: string) {
   }
 }
 
-async function pollJudge0Result(token: string, apiKey: string) {
-  const judge0ResultUrl = `https://judge0.p.rapidapi.com/submissions/${token}?base64_encoded=false`;
-
-  while (true) {
-    try {
-      const response = await axios.get(judge0ResultUrl, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-          'x-rapidapi-key': apiKey,
-        },
-      });
-
-      if (!response.data || !response.data.status) {
-        throw new Error('Invalid response from Judge0 API');
-      }
-
-      const resultData = response.data;
-
-      if (resultData.status.id > 2) {
-        // i.e result is processed
-        return resultData;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    } catch (error) {
-      console.error(`Error polling Judge0 API for token ${token}`, error);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    }
-  }
-}
-
 async function startWorker() {
   try {
     await redisClient.connect();
@@ -85,8 +96,10 @@ async function startWorker() {
 
     while (true) {
       try {
+        // eslint-disable-next-line no-await-in-loop
         const data = await redisClient.brPop('submissions', 0);
         if (data) {
+          // eslint-disable-next-line no-await-in-loop
           await processSubmission(data.element);
         }
       } catch (err) {
@@ -96,16 +109,6 @@ async function startWorker() {
   } catch (err) {
     console.log(err);
   }
-}
-
-function getLanguageId(language: string): number {
-  const languageMap: { [key: string]: number } = {
-    javascript: 63,
-    python: 71,
-    cpp: 54,
-    java: 62,
-  };
-  return languageMap[language.toLowerCase()];
 }
 
 startWorker().catch(console.error);
