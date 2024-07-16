@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {useUserStore} from '../store'
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../store";
 
 const JoinRoom: React.FC = () => {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
   const { username, roomID } = useUserStore();
-  const [roomId,setRoomId] = useState<string>("")
-  useEffect(()=>{
-    if(username==''){
-        Navigate("/auth")
+  const [roomId, setRoomId] = useState<string>("");
+  useEffect(() => {
+    if (username == "") {
+      Navigate("/auth");
     }
-    if(roomID!="") setRoomId(roomID)
-  })
+    if (roomID != "") setRoomId(roomID);
+  });
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    Navigate(`/room/${roomId}`)
+    Navigate(`/room/${roomId}`);
   };
 
   return (
@@ -26,7 +26,9 @@ const JoinRoom: React.FC = () => {
           placeholder="Room ID"
           className="bg-blue-900 text-blue-200 border-b border-blue-400 rounded mb-4 px-3 py-2"
           value={roomId}
-          onChange={(e)=>{setRoomId(e.target.value)}}
+          onChange={(e) => {
+            setRoomId(e.target.value);
+          }}
         />
         <button
           type="submit"
@@ -36,8 +38,13 @@ const JoinRoom: React.FC = () => {
         </button>
       </form>
       <p className="mt-4">
-        Don't have a room?{' '}
-        <button onClick={()=>{Navigate("/create")}} className="text-blue-400 hover:text-blue-200 focus:outline-none">
+        Don't have a room?{" "}
+        <button
+          onClick={() => {
+            Navigate("/create");
+          }}
+          className="text-blue-400 hover:text-blue-200 focus:outline-none"
+        >
           Create Room
         </button>
       </p>

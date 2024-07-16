@@ -1,21 +1,22 @@
-import express, { Request, Response } from 'express';
-import { WebSocketServer, WebSocket } from 'ws';
-import { createClient } from 'redis';
-import cors from 'cors';
-import bcrypt from 'bcrypt';
-import ConnectDB from './database';
-import User from './database/models/User';
+import express, { Request, Response } from "express";
+import { WebSocketServer, WebSocket } from "ws";
+import { createClient } from "redis";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import ConnectDB from "./database";
+import User from "./database/models/User";
 
 const app = express();
 const httpServer = app.listen(8080, () => {
-  console.log('Server listening on port 8080');
+  console.log("Server listening on port 8080");
 });
 app.use(cors());
 app.use(express.json());
 
 // connect to redis after launching it from docker
 
-const redis_url = process.env.REDIS_URL === 'No-Url-provided' ? '' : process.env.REDIS_URL;
+const redis_url =
+  process.env.REDIS_URL === "No-Url-provided" ? "" : process.env.REDIS_URL;
 
 const redisClient = createClient({
   url: redis_url,
@@ -25,37 +26,41 @@ const redisClientSubscribing = createClient({
   url: redis_url,
 });
 
-redisClient.connect().catch((err) => { console.log(err); });
-redisClientSubscribing.connect().catch((err) => { console.log(err); });
+redisClient.connect().catch((err) => {
+  console.log(err);
+});
+redisClientSubscribing.connect().catch((err) => {
+  console.log(err);
+});
 
 type room = {
-  name: string,
-  roomId: string,
+  name: string;
+  roomId: string;
   users: Array<{
-    username: string,
-    ws: WebSocket
-  }>,
-  code: string,
+    username: string;
+    ws: WebSocket;
+  }>;
+  code: string;
   chats: Array<{
-    username: string,
-    message: string
-  }>,
-  language: string,
-  result: string
-}
+    username: string;
+    message: string;
+  }>;
+  language: string;
+  result: string;
+};
 
-const rooms:room[] = [];
+const rooms: room[] = [];
 
 // Controllers
 // typescript-eslint/no-explicit-any
-function handleUserJoined(message:any, ws : WebSocket) {
+function handleUserJoined(message: any, ws: WebSocket) {
   const { roomId, username } = message;
 
   // Find the room based on roomId
   const ROOM = rooms.find((Room) => Room.roomId === roomId);
   if (!ROOM) {
     const notFoundMessage = JSON.stringify({
-      Title: 'Not-found',
+      Title: "Not-found",
     });
     ws.send(notFoundMessage);
     return;
@@ -64,14 +69,16 @@ function handleUserJoined(message:any, ws : WebSocket) {
   console.log(ROOM);
 
   // Check if the user is already in the room
-  const existingUserIndex = ROOM.users.findIndex((user) => user.username === username);
+  const existingUserIndex = ROOM.users.findIndex(
+    (user) => user.username === username,
+  );
   if (existingUserIndex !== -1) {
     // Update the existing user's WebSocket connection
     ROOM.users[existingUserIndex].ws = ws;
 
     // Send room info to the existing user
     const roomInfoMessage = JSON.stringify({
-      Title: 'Room-Info',
+      Title: "Room-Info",
       roomId,
       roomName: ROOM.name,
       users: ROOM.users.map((user) => user.username),
@@ -89,7 +96,7 @@ function handleUserJoined(message:any, ws : WebSocket) {
 
   // Send a message to all other users in the room about the new user
   const newUserMessage = JSON.stringify({
-    Title: 'New-User',
+    Title: "New-User",
     username,
   });
 
@@ -101,7 +108,7 @@ function handleUserJoined(message:any, ws : WebSocket) {
 
   // Send room info to the newly joined user
   const roomInfoMessage = JSON.stringify({
-    Title: 'Room-Info',
+    Title: "Room-Info",
     roomId,
     roomName: ROOM.name,
     users: ROOM.users.map((user) => user.username),
@@ -127,7 +134,7 @@ function handleUserLeft(message: any) {
 
   // Notify remaining users in the room
   const userLeftMessage = JSON.stringify({
-    Title: 'User-left',
+    Title: "User-left",
     username,
     users: ROOM.users.map((user) => user.username),
   });
@@ -139,7 +146,7 @@ function handleUserLeft(message: any) {
   });
 }
 
-function handleNewChat(message:any) {
+function handleNewChat(message: any) {
   const { roomId, username, chat } = message;
   const ROOM = rooms.find((Room) => Room.roomId === roomId);
   if (!ROOM) {
@@ -147,7 +154,7 @@ function handleNewChat(message:any) {
   }
   ROOM.chats.push({ username, message: chat });
   const newChatMessage = JSON.stringify({
-    Title: 'New-chat',
+    Title: "New-chat",
     username,
     chat,
   });
@@ -158,7 +165,7 @@ function handleNewChat(message:any) {
   });
 }
 
-function handleLangChange(message:any) {
+function handleLangChange(message: any) {
   const { roomId, lang } = message;
   const ROOM = rooms.find((Room) => Room.roomId === roomId);
   if (!ROOM) {
@@ -166,7 +173,7 @@ function handleLangChange(message:any) {
   }
   ROOM.language = lang;
   const langChangeMessage = {
-    Title: 'lang-change',
+    Title: "lang-change",
     lang,
   };
   ROOM.users.forEach((user) => {
@@ -176,7 +183,7 @@ function handleLangChange(message:any) {
   });
 }
 
-function handleCodeChange(message:any) {
+function handleCodeChange(message: any) {
   const { roomId, code } = message;
   const ROOM = rooms.find((Room) => Room.roomId === roomId);
   if (!ROOM) {
@@ -184,7 +191,7 @@ function handleCodeChange(message:any) {
   }
   ROOM.code = code;
   const CodeChangeMessage = {
-    Title: 'Code-change',
+    Title: "Code-change",
     code,
   };
   ROOM.users.forEach((user) => {
@@ -194,7 +201,7 @@ function handleCodeChange(message:any) {
   });
 }
 
-async function handleSubmitted(message:any) {
+async function handleSubmitted(message: any) {
   const { roomId } = message;
   const ROOM = rooms.find((Room) => Room.roomId === roomId);
   if (!ROOM) {
@@ -202,7 +209,7 @@ async function handleSubmitted(message:any) {
   }
 
   const SubmitClickedMessage = {
-    Title: 'Submit-clicked',
+    Title: "Submit-clicked",
   };
 
   ROOM.users.forEach((user) => {
@@ -211,9 +218,9 @@ async function handleSubmitted(message:any) {
     }
   });
 
-  if (process.env.REDIS_URL === 'No-Url-provided' || !process.env.REDIS_URL) {
+  if (process.env.REDIS_URL === "No-Url-provided" || !process.env.REDIS_URL) {
     const resultMessage = {
-      Title: 'No-worker',
+      Title: "No-worker",
     };
     ROOM.users.forEach((user) => {
       if (user.ws.readyState === WebSocket.OPEN) {
@@ -224,7 +231,7 @@ async function handleSubmitted(message:any) {
   }
 
   // push the message into submissions queue
-  await redisClient.lPush('submissions', JSON.stringify(message));
+  await redisClient.lPush("submissions", JSON.stringify(message));
 
   // subscribe to the roomId
   redisClientSubscribing.subscribe(roomId, (result) => {
@@ -235,7 +242,7 @@ async function handleSubmitted(message:any) {
 
     // Create a new JSON object containing the required fields
     const resultMessage = {
-      Title: 'Result',
+      Title: "Result",
       stdout: parsedResult.stdout,
       stderr: parsedResult.stderr,
       status: parsedResult.status.description,
@@ -253,75 +260,77 @@ async function handleSubmitted(message:any) {
 
 const wss = new WebSocketServer({ server: httpServer });
 
-wss.on('connection', (ws) => {
-  ws.on('error', console.error);
+wss.on("connection", (ws) => {
+  ws.on("error", console.error);
 
-  ws.on('message', (data) => {
+  ws.on("message", (data) => {
     const message = JSON.parse(data.toString());
-    console.log('Message received:', message);
-    if (message.Title === 'User-joined') {
+    console.log("Message received:", message);
+    if (message.Title === "User-joined") {
       handleUserJoined(message, ws);
-    } else if (message.Title === 'User-left') {
+    } else if (message.Title === "User-left") {
       handleUserLeft(message);
-    } else if (message.Title === 'New-chat') {
+    } else if (message.Title === "New-chat") {
       handleNewChat(message);
-    } else if (message.Title === 'lang-change') {
+    } else if (message.Title === "lang-change") {
       handleLangChange(message);
-    } else if (message.Title === 'Code-change') {
+    } else if (message.Title === "Code-change") {
       handleCodeChange(message);
-    } else if (message.Title === 'Submitted') {
+    } else if (message.Title === "Submitted") {
       handleSubmitted(message);
     }
   });
 
-  ws.send(JSON.stringify({ Title: 'Greet', msg: 'Hello! Message From Server!!' }));
+  ws.send(
+    JSON.stringify({ Title: "Greet", msg: "Hello! Message From Server!!" }),
+  );
 });
 
-app.post('/signin', async (req:Request, res:Response) => {
+app.post("/signin", async (req: Request, res: Response) => {
   await ConnectDB();
   const { username, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'user not found' });
+      return res.status(400).json({ message: "user not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid password' });
+      return res.status(400).json({ message: "Invalid password" });
     }
 
-    return res.status(200).json({ message: 'Login successful' });
+    return res.status(200).json({ message: "Login successful" });
   } catch (error) {
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
-app.post('/signup', async (req:Request, res:Response) => {
+app.post("/signup", async (req: Request, res: Response) => {
   await ConnectDB();
   const { username, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ message: "Username already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
-    return res.status(201).json({ message: 'User created successfully' });
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
-app.post('/create', (req:Request, res:Response) => {
+app.post("/create", (req: Request, res: Response) => {
   const { username, roomName, roomId } = req.body;
   if (!username || !roomName || !roomId) {
-    res.status(400).json({ error: 'Some error' });
+    res.status(400).json({ error: "Some error" });
     return;
   }
 
@@ -329,12 +338,12 @@ app.post('/create', (req:Request, res:Response) => {
     name: roomName,
     roomId,
     users: [],
-    code: '',
+    code: "",
     chats: [],
-    language: 'python',
-    result: '',
+    language: "python",
+    result: "",
   };
 
   rooms.push(newRoom);
-  res.status(200).json({ message: 'Room created successfully' });
+  res.status(200).json({ message: "Room created successfully" });
 });

@@ -1,6 +1,6 @@
-import { createClient } from 'redis';
-import axios from 'axios';
-import dotenv from 'dotenv';
+import { createClient } from "redis";
+import axios from "axios";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -21,14 +21,14 @@ async function pollJudge0Result(token: string, apiKey: string) {
       // eslint-disable-next-line no-await-in-loop
       const response = await axios.get(judge0ResultUrl, {
         headers: {
-          'Content-Type': 'application/json',
-          'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-          'x-rapidapi-key': apiKey,
+          "Content-Type": "application/json",
+          "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+          "x-rapidapi-key": apiKey,
         },
       });
 
       if (!response.data || !response.data.status) {
-        throw new Error('Invalid response from Judge0 API');
+        throw new Error("Invalid response from Judge0 API");
       }
 
       const resultData = response.data;
@@ -38,11 +38,15 @@ async function pollJudge0Result(token: string, apiKey: string) {
         return resultData;
       }
       // eslint-disable-next-line no-await-in-loop
-      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
     } catch (error) {
       console.error(`Error polling Judge0 API for token ${token}`, error);
       // eslint-disable-next-line no-await-in-loop
-      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
     }
   }
 }
@@ -54,8 +58,9 @@ async function processSubmission(submission: string) {
   const { roomId, code, language } = JSON.parse(submission);
   console.log(roomId, code, language);
 
-  const judge0Url = 'https://judge0.p.rapidapi.com/submissions?fields=*&base64_encoded=false&wait=true';
-  const judge0Key = process.env.X_RAPID_API_KEY || '';
+  const judge0Url =
+    "https://judge0.p.rapidapi.com/submissions?fields=*&base64_encoded=false&wait=true";
+  const judge0Key = process.env.X_RAPID_API_KEY || "";
 
   const payload = {
     source_code: code,
@@ -65,14 +70,20 @@ async function processSubmission(submission: string) {
   try {
     const response = await axios.post(judge0Url, payload, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-        'x-rapidapi-key': judge0Key,
+        "Content-Type": "application/json",
+        "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+        "x-rapidapi-key": judge0Key,
       },
     });
 
-    if (!response.data || !response.data.status || response.data.status.id <= 2) {
-      throw new Error(`Judge0 API responded with status ${response.data.status}`);
+    if (
+      !response.data ||
+      !response.data.status ||
+      response.data.status.id <= 2
+    ) {
+      throw new Error(
+        `Judge0 API responded with status ${response.data.status}`,
+      );
     }
 
     let result = response.data;
@@ -92,18 +103,18 @@ async function processSubmission(submission: string) {
 async function startWorker() {
   try {
     await redisClient.connect();
-    console.log('Worker connected to Redis.');
+    console.log("Worker connected to Redis.");
 
     while (true) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        const data = await redisClient.brPop('submissions', 0);
+        const data = await redisClient.brPop("submissions", 0);
         if (data) {
           // eslint-disable-next-line no-await-in-loop
           await processSubmission(data.element);
         }
       } catch (err) {
-        console.error('Error processing submission:', err);
+        console.error("Error processing submission:", err);
       }
     }
   } catch (err) {
