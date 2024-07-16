@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 function getLanguageId(language: string): number {
-           const languageMap: { [key: string]: number } = {
+  const languageMap: { [key: string]: number } = {
     javascript: 63,
     python: 71,
     cpp: 54,
