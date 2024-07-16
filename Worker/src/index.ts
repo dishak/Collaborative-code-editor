@@ -112,4 +112,3 @@ async function startWorker() {
 }
 
 startWorker().catch(console.error);
-console.error('Error processing submission:');
