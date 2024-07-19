@@ -25,6 +25,8 @@ Welcome to the Collaborative Code Editor (CCE) repository! This application allo
 
 ### Manual Setup
 
+### dummy
+
 1. **Clone the repository**:
 
    ```sh
