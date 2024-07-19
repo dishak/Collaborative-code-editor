@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "prettier" : "prettier . --write",
-    "lint": "eslint . --fix"
+     "prettier:check" : "prettier . --check",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint . --quiet"
   },
   "keywords": [],
   "author": "",
