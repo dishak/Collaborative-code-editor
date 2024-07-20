@@ -2,7 +2,7 @@
 
 ![System Design](SystemDesign.png)
 
-# 🎉 Collaborative Code Editor
+# 🎉 Collaborative Code Editors
 
 Welcome to the Collaboratve Code Editor (CCE) repository! This application allows multiple users to collaboratively write and edit code in real-time, leveraging the power of WebSockets. Users can sign up or log in with a unique username, create or join rooms with unique room IDs, and interact with other users through real-time chat and code editing. Each room supports multiple users who can collaboratively write code, select the programming language, submit their code for execution, and view the results together. The backend handles code execution using the Judge0 API and Redis for task queuing and pub/sub functionality. This makes CCE an ideal platform for collaborative coding sessions, educational environments, and coding competitions.
 
