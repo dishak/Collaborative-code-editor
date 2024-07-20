@@ -23,7 +23,7 @@ Welcome to the Collaborative Code Editor (CCE) repository! This application allo
 
 ## 📦 Setup Guide
 
-### Manual Setup
+### #Manual Setup
 
 1. **Clone the repository**:
 
