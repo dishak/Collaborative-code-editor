@@ -3,7 +3,7 @@ name: Build and Deploy to Docker Hub
 on:
   push:
     branches:
-      - master
+      - cd-pipeline
 
 jobs:
   build-and-push:
