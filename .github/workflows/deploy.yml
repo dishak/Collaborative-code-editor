@@ -22,7 +22,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./Server
-        file: ./Dockerfile
+        file: ./Server/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/server:latest  # Replace with your Docker Hub username and repository
       env:
@@ -32,7 +32,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
           context: ./Worker
-          file: ./Dockerfile
+          file: ./Worker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/worker:latest  # Replace with your Docker Hub username and repository
       env:
@@ -42,7 +42,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
           context: ./Client
-          file: ./Dockerfile
+          file: ./Client/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/client:latest  # Replace with your Docker Hub username and repository
       env:
