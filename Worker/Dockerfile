@@ -1,5 +1,5 @@
 # Use an official node image as the base image
-FROM node:18
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /src
