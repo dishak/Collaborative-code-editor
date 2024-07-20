@@ -48,7 +48,7 @@ Welcome to the Collaborative Code Editor (CCE) repository! This application allo
    npm install
    ```
 
-3. **Create `.env` file** in each folder and configure your environment variables: (Refer the .env.example file)
+3. **Create a `.env` file** in each folder and configure your environment variables: (Refer the .env.example file)
 
    ```env
    # Example Client .env file
