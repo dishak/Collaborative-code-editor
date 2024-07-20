@@ -1,0 +1,50 @@
+name: Build and Deploy to Docker Hub
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Repo
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and Push Docker image for Server 
+      uses: docker/build-push-action@v2
+      with:
+        context: ./Server
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/server:latest  # Replace with your Docker Hub username and repository
+      env:
+        REDIS_URL: ${{ secrets.REDIS_URL }}
+
+    - name: Build and Push Docker image for Worker 
+      uses: docker/build-push-action@v2
+      with:
+          context: ./Worker
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/worker:latest  # Replace with your Docker Hub username and repository
+      env:
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+
+    - name: Build and Push Docker image for Client 
+      uses: docker/build-push-action@v2
+      with:
+          context: ./Client
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/client:latest  # Replace with your Docker Hub username and repository
+      env:
+          VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}      
+      
