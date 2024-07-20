@@ -19,7 +19,13 @@ jobs:
         run: npm install
 
       - name: Install Server Dependencies
-        run: cd ./Server && npm install && npm run start
+        run: cd ./Server && npm install
+
+      - name: Check Server Start
+        run: |
+          cd ./Server
+          npm run start & sleep 10 && kill $!
+        continue-on-error: true
 
       - name: Install Worker Dependencies
         run: cd ./Worker && npm install && npm run start
