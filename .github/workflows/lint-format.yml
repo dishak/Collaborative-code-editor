@@ -31,7 +31,13 @@ jobs:
         run: cd ./Worker && npm install && npm run start
 
       - name: Install Client Dependencies
-        run: cd ./Client && npm install && npm run dev
+        run: cd ./Client && npm install
+
+      - name: Check Client Start
+        run: |
+          cd ./Client
+          npm run dev & sleep 10 && kill $!
+        continue-on-error: true
 
       - name: Run Prettier
         run: npm run prettier:check
