@@ -18,14 +18,14 @@ jobs:
       - name: Install main Dependencies
         run: npm install
 
-      - name: Install Client Dependencies
-        run: cd ./Client && npm install && npm run dev
-
       - name: Install Server Dependencies
         run: cd ./Server && npm install && npm run start
 
       - name: Install Worker Dependencies
         run: cd ./Worker && npm install && npm run start
+
+      - name: Install Client Dependencies
+        run: cd ./Client && npm install && npm run dev
 
       - name: Run Prettier
         run: npm run prettier:check
