@@ -48,28 +48,28 @@ jobs:
       env:
           VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}      
       
-    - name: Transfer Docker Compose file to EC2
-      run: |
-            scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:.
+    # - name: Transfer Docker Compose file to EC2
+    #   run: |
+            # scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:.
              
-    # - name: Deploy to EC2
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #         host: ${{ secrets.EC2_SSH_HOST }}
-    #         username: ${{ secrets.EC2_SSH_USERNAME }}
-    #         key: ${{ secrets.EC2_SSH_KEY }}
-    #         script: |
-    #             sudo mkdir docker
-    #             cd ./docker
-    #          # scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:.
-    #         # script: |
-    #                     #    scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker
-    #             # cd /docker
-    #         #   mkdir -p /docker
-    #         #   scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
-    #         #   export REDIS_URL=${{ secrets.REDIS_URL }}
-    #         #   export VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}
-    #         #   cd ./docker
-    #         #   sudo docker-compose -f docker-compose-prod.yml pull
-    #         #   sudo docker-compose -f docker-compose-prod.yml down
-    #         #   sudo docker-compose -f docker-compose-prod.yml up -d
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+            host: ${{ secrets.EC2_SSH_HOST }}
+            username: ${{ secrets.EC2_SSH_USERNAME }}
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+                username
+                
+             # scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:.
+            # script: |
+                        #    scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker
+                # cd /docker
+            #   mkdir -p /docker
+            #   scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
+            #   export REDIS_URL=${{ secrets.REDIS_URL }}
+            #   export VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}
+            #   cd ./docker
+            #   sudo docker-compose -f docker-compose-prod.yml pull
+            #   sudo docker-compose -f docker-compose-prod.yml down
+            #   sudo docker-compose -f docker-compose-prod.yml up -d
