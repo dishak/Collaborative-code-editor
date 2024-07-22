@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  redis:
+    image: "redis:alipne"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  server:
+    image: "disha968/server:latest"
+    container_name: server
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./Server:/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
+
+  worker:
+    image: "disha968/worker:latest"
+    container_name: worker
+    depends_on:
+      - redis
+    volumes:
+      - ./Worker:/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
+
+  client:
+    image: "disha968/client:latest"
+    container_name: client
+    depends_on:
+      - server
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Client:/src
+    environment:
+      - VITE_REACT_APP_SERVER_URL=${VITE_REACT_APP_SERVER_URL}
+
+volumes:
+  redis-data:
