@@ -55,8 +55,9 @@ jobs:
             username: ${{ secrets.EC2_SSH_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
-                hostname
                 sudo mkdir -p /docker
+                ls
+            # scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker
             # script: |
             #   mkdir -p /docker
             #   scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
