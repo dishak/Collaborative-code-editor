@@ -55,11 +55,13 @@ jobs:
             username: ${{ secrets.EC2_SSH_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
-              mkdir -p /docker
-              scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
-              export REDIS_URL=${{ secrets.REDIS_URL }}
-              export VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}
-              cd ./docker
-              sudo docker-compose -f docker-compose-prod.yml pull
-              sudo docker-compose -f docker-compose-prod.yml down
-              sudo docker-compose -f docker-compose-prod.yml up -d
+                hostname
+            # script: |
+            #   mkdir -p /docker
+            #   scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
+            #   export REDIS_URL=${{ secrets.REDIS_URL }}
+            #   export VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}
+            #   cd ./docker
+            #   sudo docker-compose -f docker-compose-prod.yml pull
+            #   sudo docker-compose -f docker-compose-prod.yml down
+            #   sudo docker-compose -f docker-compose-prod.yml up -d
