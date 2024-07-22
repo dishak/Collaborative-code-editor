@@ -56,10 +56,10 @@ jobs:
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
                 sudo mkdir docker
-                scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker
-                cd /docker
-                ls 
+                ls /
             # script: |
+                        #    scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker
+                # cd /docker
             #   mkdir -p /docker
             #   scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker
             #   export REDIS_URL=${{ secrets.REDIS_URL }}
