@@ -50,7 +50,7 @@ jobs:
       
     - name: Transfer Docker Compose file to EC2
       run: |
-            scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
+            scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:.
              
     # - name: Deploy to EC2
     #   uses: appleboy/ssh-action@master
