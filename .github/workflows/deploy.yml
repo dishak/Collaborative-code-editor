@@ -52,11 +52,10 @@ jobs:
       run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
     
     - name: Set permissions for SSH key
-      run: chmod 700 key.pem      
-   
+      run: chmod 600 key.pem
+      
     - name: Transfer Docker Compose file to EC2
-      run: |
-            scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker/
+      run: scp -i key.pem ./docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
              
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
