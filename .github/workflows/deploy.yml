@@ -49,14 +49,14 @@ jobs:
           VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}      
         
          
-    # - name: Deploy to EC2
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #         host: ${{ secrets.EC2_SSH_HOST }}
-    #         username: ${{ secrets.EC2_SSH_USERNAME }}
-    #         key: ${{ secrets.EC2_SSH_KEY }}
-    #         script: |
-    #             sudo mkdir docker
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+            host: ${{ secrets.EC2_SSH_HOST }}
+            username: ${{ secrets.EC2_SSH_USERNAME }}
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+                sudo mkdir -p docker
           
     - name: Create SSH key file
       run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
