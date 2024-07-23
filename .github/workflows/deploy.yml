@@ -57,6 +57,7 @@ jobs:
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
                 sudo mkdir -p docker
+                sudo chown ubuntu:ubuntu /home/ubuntu/docker
        
     - name: Create SSH key file
       run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
