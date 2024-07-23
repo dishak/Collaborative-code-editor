@@ -53,13 +53,14 @@ jobs:
     
     - name: Set permissions for SSH key
       run: chmod 700 key.pem
-      
-    - name: Transfer Docker Compose file to EC2
-      run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
-    
+
     - name: Transfer Docker Compose file to EC2
       run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./
-      
+
+           
+    - name: Transfer Docker Compose file to EC2
+      run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
+   
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
