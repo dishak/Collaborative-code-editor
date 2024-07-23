@@ -75,4 +75,4 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
     
     - name: Transfer Docker Compose file to EC2
-      run: scp -i key.pem docker-compose.yml ${{ secrets.EC2_SSH_USERNAME }}@ec2-13-232-81-84.ap-south-1.compute.amazonaws.com:/home/ubuntu/docker/
+      run: scp -i key.pem docker-compose.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
