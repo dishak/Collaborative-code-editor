@@ -63,6 +63,6 @@ jobs:
               ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
               scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
               cd /home/ubuntu/docker
-              sudo docker compose -f docker-compose-prod.yml up -d
+              REDIS_URL=${{ secrets.REDIS_URL }} VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }} sudo docker compose -f docker-compose-prod.yml up -d
         
     
