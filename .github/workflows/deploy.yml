@@ -75,7 +75,7 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
     
     - name: Transfer Docker Compose file to EC2
-      run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
+      run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker/
 
     - name: Start Docker Compose
       uses: appleboy/ssh-action@master
