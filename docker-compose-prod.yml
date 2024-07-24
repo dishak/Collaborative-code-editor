@@ -6,8 +6,6 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-    volumes:
-      - redis-data:/data
 
   server:
     image: "disha968/server:latest"
@@ -16,8 +14,6 @@ services:
       - redis
     ports:
       - "8080:8080"
-    volumes:
-      - ./Server:/src
     environment:
       - REDIS_URL=${REDIS_URL}
 
@@ -26,8 +22,6 @@ services:
     container_name: worker
     depends_on:
       - redis
-    volumes:
-      - ./Worker:/src
     environment:
       - REDIS_URL=${REDIS_URL}
 
@@ -38,10 +32,5 @@ services:
       - server
     ports:
       - "5173:5173"
-    volumes:
-      - ./Client:/src
     environment:
       - VITE_REACT_APP_SERVER_URL=${VITE_REACT_APP_SERVER_URL}
-
-volumes:
-  redis-data:
