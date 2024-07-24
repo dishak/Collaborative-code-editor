@@ -49,41 +49,20 @@ jobs:
           VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}      
         
          
-    - name: Deploy to EC2
+    - name: Deploy and Start Docker Compose on EC2
       uses: appleboy/ssh-action@master
       with:
             host: ${{ secrets.EC2_SSH_HOST }}
             username: ${{ secrets.EC2_SSH_USERNAME }}
             key: ${{ secrets.EC2_SSH_KEY }}
             script: |
-                sudo mkdir -p docker
-                sudo chown ubuntu:ubuntu /home/ubuntu/docker
-       
-    - name: Create SSH key file
-      run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
-              
-    - name: Set permissions for SSH key
-      run: chmod 700 key.pem            
-   
-    - name: Verify SSH key file
-      run: ls -l key.pem
-
-    - name: Create .ssh directory
-      run: mkdir -p ~/.ssh
-     
-    - name: Add EC2 host key to known hosts
-      run: ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
-    
-    - name: Transfer Docker Compose file to EC2
-      run: scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:./docker/
-
-    - name: Start Docker Compose
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_SSH_HOST }}
-        username: ${{ secrets.EC2_SSH_USERNAME }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          cd ./docker
-          sudo docker compose -f docker-compose-prod.yml up -d
-    
+              sudo mkdir -p /home/ubuntu/docker
+              sudo chown ubuntu:ubuntu /home/ubuntu/docker
+              echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+              chmod 700 key.pem
+              mkdir -p ~/.ssh
+              ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
+              scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
+              cd /home/ubuntu/docker
+              sudo docker compose -f docker-compose-prod.yml up -d
+        
