@@ -1,2 +1,4 @@
+npm run lint:check
+npm run prettier:check
 
 
