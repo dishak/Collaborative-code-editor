@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   redis:
@@ -41,7 +41,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./Client:/app
+      - ./Client:/src
 
 volumes:
   redis-data:

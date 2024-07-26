@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,8 +8,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Text
-} from '@chakra-ui/react';
+  Text,
+} from "@chakra-ui/react";
 
 interface ResultMessage {
   Title: string;
@@ -25,7 +25,11 @@ interface ResultModalProps {
   resultMessage: ResultMessage;
 }
 
-const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose, resultMessage }) => {
+const ResultModal: React.FC<ResultModalProps> = ({
+  isOpen,
+  onClose,
+  resultMessage,
+}) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -33,10 +37,22 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose, resultMessag
         <ModalHeader>{resultMessage.Title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text><strong>Status:</strong> {resultMessage.status}</Text>
-          <Text><strong>Output:</strong> {resultMessage.stdout}</Text>
-          { resultMessage.compile_output && <Text><strong></strong> {resultMessage.compile_output}</Text>}
-          {resultMessage.stderr && <Text><strong>Error:</strong> {resultMessage.stderr}</Text>}
+          <Text>
+            <strong>Status:</strong> {resultMessage.status}
+          </Text>
+          <Text>
+            <strong>Output:</strong> {resultMessage.stdout}
+          </Text>
+          {resultMessage.compile_output && (
+            <Text>
+              <strong></strong> {resultMessage.compile_output}
+            </Text>
+          )}
+          {resultMessage.stderr && (
+            <Text>
+              <strong>Error:</strong> {resultMessage.stderr}
+            </Text>
+          )}
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>

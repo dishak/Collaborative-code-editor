@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-dotenv.config(); 
+dotenv.config();
 
 let isConnected = false;
 
@@ -16,7 +16,7 @@ const ConnectDB = async () => {
   }
 
   try {
-    await mongoose.connect(url)
+    await mongoose.connect(url);
     console.log("DB connected!");
     isConnected = true;
   } catch (e) {
