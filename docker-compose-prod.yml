@@ -7,23 +7,23 @@ services:
     ports:
       - "6379:6379"
 
-  server:
-    image: "disha968/server:latest"
-    container_name: server
-    depends_on:
-      - redis
-    ports:
-      - "8080:8080"
-    environment:
-      - REDIS_URL=${REDIS_URL}
+  # server:
+  #   image: "disha968/server:latest"
+  #   container_name: server
+  #   depends_on:
+  #     - redis
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - REDIS_URL=${REDIS_URL}
 
-  worker:
-    image: "disha968/worker:latest"
-    container_name: worker
-    depends_on:
-      - redis
-    environment:
-      - REDIS_URL=${REDIS_URL}
+  # worker:
+  #   image: "disha968/worker:latest"
+  #   container_name: worker
+  #   depends_on:
+  #     - redis
+  #   environment:
+  #     - REDIS_URL=${REDIS_URL}
 
   client:
     image: "disha968/client:latest"
