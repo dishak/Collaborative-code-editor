@@ -18,35 +18,35 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker image for Server
-        uses: docker/build-push-action@v2
-        with:
-          context: ./Server
-          file: ./Server/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/server:latest # Replace with your Docker Hub username and repository
-        env:
-          REDIS_URL: ${{ secrets.REDIS_URL }}
+      # - name: Build and Push Docker image for Server
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./Server
+      #     file: ./Server/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/server:latest # Replace with your Docker Hub username and repository
+      #   env:
+      #     REDIS_URL: ${{ secrets.REDIS_URL }}
 
-      - name: Build and Push Docker image for Worker
-        uses: docker/build-push-action@v2
-        with:
-          context: ./Worker
-          file: ./Worker/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/worker:latest # Replace with your Docker Hub username and repository
-        env:
-          REDIS_URL: ${{ secrets.REDIS_URL }}
+      # - name: Build and Push Docker image for Worker
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./Worker
+      #     file: ./Worker/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/worker:latest # Replace with your Docker Hub username and repository
+      #   env:
+      #     REDIS_URL: ${{ secrets.REDIS_URL }}
 
-      - name: Build and Push Docker image for Client
-        uses: docker/build-push-action@v2
-        with:
-          context: ./Client
-          file: ./Client/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/client:latest # Replace with your Docker Hub username and repository
-        env:
-          VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}
+      # - name: Build and Push Docker image for Client
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./Client
+      #     file: ./Client/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/client:latest # Replace with your Docker Hub username and repository
+      #   env:
+      #     VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}
 
       - name: Deploy and Start Docker Compose on EC2
         uses: appleboy/ssh-action@master
@@ -62,9 +62,9 @@ jobs:
             mkdir -p ~/.ssh
             ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
             scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
-            cd /home/ubuntu/docker
-            sudo docker stop $(sudo docker ps -aq) || true
-            sudo docker rm $(sudo docker ps -aq) || true
-            echo "REDIS_URL=${{ secrets.REDIS_URL }}" > .env
-            echo "VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}" >> .env
-            sudo docker compose --env-file .env -f docker-compose-prod.yml up -d
+          # cd /home/ubuntu/docker
+          #   sudo docker stop $(sudo docker ps -aq) || true
+          #   sudo docker rm $(sudo docker ps -aq) || true
+          #   echo "REDIS_URL=${{ secrets.REDIS_URL }}" > .env
+          #   echo "VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}" >> .env
+          #   sudo docker compose --env-file .env -f docker-compose-prod.yml up -d
