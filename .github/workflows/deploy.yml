@@ -50,6 +50,8 @@ jobs:
       #     tags: ${{ secrets.DOCKER_USERNAME }}/client:latest # Replace with your Docker Hub username and repository
       #   env:
       #     VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}
+      - name: Copy docker-compose-prod.yml to EC2
+        run: scp -o StrictHostKeyChecking=no -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
 
       - name: Deploy and Start Docker Compose on EC2
         uses: appleboy/ssh-action@master
