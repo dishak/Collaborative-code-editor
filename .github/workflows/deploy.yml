@@ -69,10 +69,6 @@ jobs:
             ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
             sudo mkdir -p /home/ubuntu/docker
             sudo chown ubuntu:ubuntu /home/ubuntu/docker
-            echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
-            chmod 700 key.pem
-            scp -o StrictHostKeyChecking=no -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
-            ls
             cd /home/ubuntu/docker
             sudo docker stop $(sudo docker ps -aq) || true
             sudo docker rm $(sudo docker ps -aq) || true
