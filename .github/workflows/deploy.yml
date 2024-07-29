@@ -61,7 +61,7 @@ jobs:
             chmod 700 key.pem
             mkdir -p ~/.ssh
             ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
-            ls -l docker-compose-prod.yml
+            ls 
             scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
           # cd /home/ubuntu/docker
           #   sudo docker stop $(sudo docker ps -aq) || true
