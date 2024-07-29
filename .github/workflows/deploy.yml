@@ -12,6 +12,9 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
+      - name: List files to verify
+        run: ls -a
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
