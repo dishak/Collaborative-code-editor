@@ -58,13 +58,12 @@ jobs:
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo chown ubuntu:ubuntu /home/
+            mkdir -p ~/.ssh
+            ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
             sudo mkdir -p /home/ubuntu/docker
             sudo chown ubuntu:ubuntu /home/ubuntu/docker
             echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
             chmod 700 key.pem
-            mkdir -p ~/.ssh
-            ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
             scp -o StrictHostKeyChecking=no -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
             ls
             cd /home/ubuntu/docker
