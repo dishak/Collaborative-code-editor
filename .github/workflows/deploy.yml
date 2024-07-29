@@ -58,6 +58,7 @@ jobs:
           username: ${{ secrets.EC2_SSH_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            sudo chown ubuntu:ubuntu /home/
             sudo mkdir -p /home/ubuntu/docker
             sudo chown ubuntu:ubuntu /home/ubuntu/docker
             echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
@@ -65,7 +66,7 @@ jobs:
             mkdir -p ~/.ssh
             ssh-keyscan -H ${{ secrets.EC2_SSH_HOST }} >> ~/.ssh/known_hosts
             scp -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/docker/
-            ls -aR
+            ls
           # cd /home/ubuntu/docker
           #   sudo docker stop $(sudo docker ps -aq) || true
           #   sudo docker rm $(sudo docker ps -aq) || true
