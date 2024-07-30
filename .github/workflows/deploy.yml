@@ -44,11 +44,11 @@ jobs:
           context: ./Client
           file: ./Client/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/client:latest # Replace with your Docker Hub username and repository
+          tags: ${{ secrets.DOCKER_USERNAME }}/client:latest
         env:
           VITE_REACT_APP_SERVER_URL: ${{ secrets.VITE_REACT_APP_SERVER_URL }}
 
-      - name: Create a folder on EC2
+      - name: Create a folder and include known hosts on EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_SSH_HOST }}
@@ -65,7 +65,7 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
           chmod 700 key.pem
 
-      - name: Copy docker-compose-prod.yml to a folder in EC2
+      - name: Copy docker-compose-prod.yml to the folder in EC2
         run: scp -o StrictHostKeyChecking=no -i key.pem docker-compose-prod.yml ${{ secrets.EC2_SSH_USERNAME }}@${{ secrets.EC2_SSH_HOST }}:/home/ubuntu/docker/
 
       - name: Start Docker Compose on EC2
