@@ -83,4 +83,4 @@ jobs:
             sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
             echo "REDIS_URL=${{ secrets.REDIS_URL }}" > .env
             echo "VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}" >> .env
-            sudo docker compose --env-file .env -f docker-compose-prod.yml up -d --pull
+            sudo docker compose --env-file .env -f docker-compose-prod.yml up -d --pull always
