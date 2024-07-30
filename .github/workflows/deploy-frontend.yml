@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16" # Use the Node.js version compatible with your project
+          node-version: "16"
 
       - name: Install dependencies
         run: |
@@ -27,3 +27,13 @@ jobs:
           cd Client
           npm run build
           ls -a dist
+
+      - name: Configure AWS credentials
+        run: |
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY_BASE64 }} | base64 --decode > decoded_secret_key
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key $(cat decoded_secret_key)
+          aws configure set region ap-south-1
+
+      - name: Deploy to S3
+        run: aws s3 sync ./Client/dist s3://react-code-collab-project --delete # Change 'your-s3-bucket-name' to your actual bucket name
