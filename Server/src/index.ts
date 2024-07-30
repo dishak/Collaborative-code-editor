@@ -347,3 +347,9 @@ app.post("/create", (req: Request, res: Response) => {
   rooms.push(newRoom);
   res.status(200).json({ message: "Room created successfully" });
 });
+
+// dummy route to confirm fe is hitting the be correctly from s3 to ec2
+app.get("/", (req: Request, res: Response) => {
+  console.log("Welcome!");
+  res.send("Welcome to the server!");
+});

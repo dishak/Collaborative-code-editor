@@ -3,7 +3,7 @@ name: Build & Deploy to Docker Hub
 on:
   push:
     branches:
-      - enter_your_branch_name_here
+      - s3_cdn_cicd
 
 jobs:
   build-and-push:

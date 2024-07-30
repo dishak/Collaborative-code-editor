@@ -32,9 +32,6 @@ jobs:
         id: decode-secret-access-key
         run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV
 
-      - name: random
-        run: echo "random value is ${{ env.AWS_SECRET_ACCESS_KEY }}"
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
