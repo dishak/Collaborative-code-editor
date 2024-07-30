@@ -80,9 +80,9 @@ jobs:
             cd /home/ubuntu/docker
             sudo docker stop $(sudo docker ps -aq) || true
             sudo docker rm $(sudo docker ps -aq) || true
-            sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
-            sudo docker rmi $(sudo docker images | grep '<none>' | awk '{print $3}') || true
-            sudo docker rmi $(sudo docker images | grep -v 'latest' | grep -E 'disha968/server|disha968/client|disha968/worker' | awk '{print $3}') || true
             echo "REDIS_URL=${{ secrets.REDIS_URL }}" > .env
             echo "VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}" >> .env
             sudo docker compose --env-file .env -f docker-compose-prod.yml up -d --pull always
+            sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
+            sudo docker rmi $(sudo docker images | grep '<none>' | awk '{print $3}') || true
+            sudo docker rmi $(sudo docker images | grep -v 'latest' | grep -E 'disha968/server|disha968/client|disha968/worker' | awk '{print $3}') || true
