@@ -28,12 +28,16 @@ jobs:
           npm run build
           ls -a dist
 
+      - name: Decode AWS secret access key
+        id: decode-secret-access-key
+        run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY_BASE64 }} | base64 --decode)" >> $GITHUB_ENV
+
       - name: Configure AWS credentials
-        run: |
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY_BASE64 }} | base64 --decode > decoded_secret_key
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key $(cat decoded_secret_key)
-          aws configure set region ap-south-1
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: up-south-1
 
       - name: Deploy to S3
         run: aws s3 sync ./Client/dist s3://react-code-collab-project --delete # Change 'your-s3-bucket-name' to your actual bucket name
