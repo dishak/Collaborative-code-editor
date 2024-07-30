@@ -25,6 +25,7 @@ jobs:
           file: ./Server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/server:latest # Replace with your Docker Hub username and repository
+          no-cache: true
         env:
           REDIS_URL: ${{ secrets.REDIS_URL }}
 
@@ -35,6 +36,7 @@ jobs:
           file: ./Worker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/worker:latest # Replace with your Docker Hub username and repository
+          no-cache: true
         env:
           REDIS_URL: ${{ secrets.REDIS_URL }}
 
