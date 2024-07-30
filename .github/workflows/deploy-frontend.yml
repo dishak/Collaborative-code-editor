@@ -26,4 +26,4 @@ jobs:
         run: |
           cd Client
           npm run build
-          ls -a
+          ls -a dist
