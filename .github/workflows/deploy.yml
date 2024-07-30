@@ -3,7 +3,7 @@ name: Build & Deploy to Docker Hub
 on:
   push:
     branches:
-      - s3_cdn_cicd
+      - gibbrish
 
 jobs:
   build-and-push:
