@@ -80,6 +80,7 @@ jobs:
             cd /home/ubuntu/docker
             sudo docker stop $(sudo docker ps -aq) || true
             sudo docker rm $(sudo docker ps -aq) || true
+            sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
             echo "REDIS_URL=${{ secrets.REDIS_URL }}" > .env
             echo "VITE_REACT_APP_SERVER_URL=${{ secrets.VITE_REACT_APP_SERVER_URL }}" >> .env
-            sudo docker compose --env-file .env -f docker-compose-prod.yml up -d
+            sudo docker compose --env-file .env -f docker-compose-prod.yml up -d --pull
