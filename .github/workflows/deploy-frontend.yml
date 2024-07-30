@@ -1,0 +1,29 @@
+name: Build & Deploy to S3 on AWS
+
+on:
+  push:
+    branches:
+      - s3_cdn_cicd
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16" # Use the Node.js version compatible with your project
+
+      - name: Install dependencies
+        run: |
+          cd Client
+          npm install
+
+      - name: Build project
+        run: |
+          cd Client
+          npm run build
+          ls -a
