@@ -30,7 +30,7 @@ jobs:
 
       - name: Decode AWS secret access key
         id: decode-secret-access-key
-        run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY_BASE64 }} | base64 --decode)" >> $GITHUB_ENV
+        run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV
 
       - name: random
         run: echo "random value is ${{ env.AWS_SECRET_ACCESS_KEY }}"
