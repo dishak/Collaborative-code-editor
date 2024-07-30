@@ -3,7 +3,7 @@ name: Build & Deploy to S3 on AWS
 on:
   push:
     branches:
-      - s3_cdn_cicd
+      - gibbrish
 
 jobs:
   build-and-push:
@@ -27,7 +27,8 @@ jobs:
           cd Client
           npm run build
           ls -a dist
-
+        env:
+          VITE_REACT_APP_SERVER_URL: http://your-ec2-public-url
       - name: Decode AWS secret access key
         id: decode-secret-access-key
         run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV

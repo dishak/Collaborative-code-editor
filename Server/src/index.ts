@@ -351,5 +351,5 @@ app.post("/create", (req: Request, res: Response) => {
 // dummy route to confirm fe is hitting the be correctly from s3 to ec2
 app.get("/", (req: Request, res: Response) => {
   console.log("Welcome!");
-  res.send("Welcome to the server!");
+  res.status(200).json({ message: "hello from cc server" });
 });
