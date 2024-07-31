@@ -29,8 +29,8 @@ const Auth: React.FC = () => {
         : `http${import.meta.env.VITE_REACT_APP_SERVER_URL}/signup`;
     } else {
       url = isSignIn
-        ? `http${import.meta.env.VITE_REACT_APP_SERVER_URL}/signin`
-        : `http${import.meta.env.VITE_REACT_APP_SERVER_URL}/signup`;
+        ? `https${import.meta.env.VITE_REACT_APP_SERVER_URL}/signin`
+        : `https${import.meta.env.VITE_REACT_APP_SERVER_URL}/signup`;
     }
 
     try {
