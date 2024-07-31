@@ -28,7 +28,7 @@ jobs:
           npm run build
           ls -a dist
         env:
-          VITE_REACT_APP_SERVER_URL: http://ec2-13-201-65-159.ap-south-1.compute.amazonaws.com:8080/
+          VITE_REACT_APP_SERVER_URL: ://ec2-13-201-65-159.ap-south-1.compute.amazonaws.com:8080/
       - name: Decode AWS secret access key
         id: decode-secret-access-key
         run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV
