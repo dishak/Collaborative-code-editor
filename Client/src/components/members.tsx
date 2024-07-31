@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Button } from '@chakra-ui/react';
-import toast from 'react-hot-toast';
+import React from "react";
+import { Box, Button } from "@chakra-ui/react";
+import toast from "react-hot-toast";
 
 interface MembersProps {
   users: string[];
@@ -11,7 +11,7 @@ interface MembersProps {
 const Members: React.FC<MembersProps> = ({ users, roomId, onLeave }) => {
   const copyRoomIdToClipboard = () => {
     navigator.clipboard.writeText(roomId);
-    toast.success('Room ID copied to clipboard!');
+    toast.success("Room ID copied to clipboard!");
   };
 
   return (
@@ -26,19 +26,28 @@ const Members: React.FC<MembersProps> = ({ users, roomId, onLeave }) => {
         gap="10px"
         css={{
           "&::-webkit-scrollbar": {
-            display: "none"
+            display: "none",
           },
           "-ms-overflow-style": "none",
-          scrollbarWidth: "none"
+          scrollbarWidth: "none",
         }}
       >
         {users.map((user, index) => (
-          <Box className="p-2 w-fit px-4 border border-emerald-500 rounded-sm" key={index}>{user}</Box>
+          <Box
+            className="p-2 w-fit px-4 border border-emerald-500 rounded-sm"
+            key={index}
+          >
+            {user}
+          </Box>
         ))}
       </Box>
       <Box display="flex" flexDirection="column" gap="3" p="4" bg="blue.900">
-        <Button onClick={copyRoomIdToClipboard} colorScheme="blue">Copy Room ID</Button>
-        <Button onClick={onLeave} colorScheme="red">Leave Room</Button>
+        <Button onClick={copyRoomIdToClipboard} colorScheme="blue">
+          Copy Room ID
+        </Button>
+        <Button onClick={onLeave} colorScheme="red">
+          Leave Room
+        </Button>
       </Box>
     </Box>
   );

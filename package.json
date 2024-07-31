@@ -1,0 +1,32 @@
+{
+  "name": "collaborative-code-editor",
+  "version": "1.0.0",
+  "description": "![System Design](SystemDesign.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky",
+    "prettier" : "prettier . --write",
+     "prettier:check" : "prettier . --check",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint . --quiet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
+    "prettier": "3.3.3"
+  },
+  "dependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-react": "^7.34.3"
+  }
+}
