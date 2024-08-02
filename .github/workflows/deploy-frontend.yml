@@ -3,7 +3,7 @@ name: Build & Deploy to S3 on AWS
 on:
   push:
     branches:
-      - gibbrish
+      - s3_cdn_cicd
 
 jobs:
   build-and-push:
@@ -28,10 +28,11 @@ jobs:
           npm run build
           ls -a dist
         env:
-          VITE_REACT_APP_SERVER_URL: ://ec2-35-154-58-173.ap-south-1.compute.amazonaws.com
-      - name: Decode AWS secret access key
-        id: decode-secret-access-key
-        run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV
+          VITE_REACT_APP_SERVER_URL: ://ec2-13-60-15-204.eu-north-1.compute.amazonaws.com
+
+      # - name: Decode AWS secret access key
+      #   id: decode-secret-access-key
+      #   run: echo "AWS_SECRET_ACCESS_KEY=$(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode)" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
