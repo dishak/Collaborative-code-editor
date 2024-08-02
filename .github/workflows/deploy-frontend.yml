@@ -43,7 +43,7 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to S3
-        run: aws s3 sync ./Client/dist s3://react-code-collab-project --delete # Change 'your-s3-bucket-name' to your actual bucket name
+        run: aws s3 sync ./Client/dist s3://devops-test-storage --delete # Change 'your-s3-bucket-name' to your actual bucket name
 
 
       # - name: Invalidate CloudFront Cache
