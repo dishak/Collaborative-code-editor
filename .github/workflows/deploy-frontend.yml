@@ -28,7 +28,7 @@ jobs:
           npm run build
           ls -a dist
         env:
-          VITE_REACT_APP_SERVER_URL: ://ec2-13-60-15-204.eu-north-1.compute.amazonaws.com
+          VITE_REACT_APP_SERVER_URL: ://backend.cloudevtest.online
 
       # - name: Decode AWS secret access key
       #   id: decode-secret-access-key
