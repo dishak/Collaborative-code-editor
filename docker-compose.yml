@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   redis:
-    image: "redis:latest"
+    image: "redis:alpine"
     container_name: redis
     ports:
       - "6379:6379"
@@ -20,6 +20,8 @@ services:
       - "8080:8080"
     volumes:
       - ./Server:/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
 
   worker:
     build:
@@ -30,6 +32,8 @@ services:
       - redis
     volumes:
       - ./Worker:/src
+    environment:
+      - REDIS_URL=${REDIS_URL}
 
   client:
     build:
@@ -41,7 +45,9 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./Client:/app
+      - ./Client:/src
+    environment:
+      - VITE_REACT_APP_SERVER_URL=${VITE_REACT_APP_SERVER_URL}
 
 volumes:
   redis-data:

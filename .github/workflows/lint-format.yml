@@ -1,0 +1,46 @@
+name: Build on PR
+
+on:
+  pull_request:
+    branches:
+      - cicd_pipeline
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install main Dependencies
+        run: npm install
+
+      - name: Install Server Dependencies
+        run: cd ./Server && npm install
+
+      - name: Check Server Start
+        run: |
+          cd ./Server
+          npm run start & sleep 10 && kill $!
+        continue-on-error: true
+
+      - name: Install Worker Dependencies
+        run: cd ./Worker && npm install && npm run start
+
+      - name: Install Client Dependencies
+        run: cd ./Client && npm install
+
+      - name: Check Client Start
+        run: |
+          cd ./Client
+          npm run dev & sleep 10 && kill $!
+        continue-on-error: true
+
+      - name: Run Prettier
+        run: npm run prettier:check
+
+      - name: Run Lint
+        run: npm run lint:check

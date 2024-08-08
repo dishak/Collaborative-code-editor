@@ -1,67 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
-import {useUserStore} from '../store'
-
-
+import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../store";
 
 const CreateRoom: React.FC = () => {
-  const [roomName, setRoomName] = useState('');
-  const [roomId, setRoomId] = useState('');
-  const Navigate = useNavigate()
+  const [roomName, setRoomName] = useState("");
+  const [roomId, setRoomId] = useState("");
+  const Navigate = useNavigate();
   const { username, setRoomID } = useUserStore();
-  useEffect(()=>{
-    if(username==''){
-        Navigate("/auth")
+  useEffect(() => {
+    if (username == "") {
+      Navigate("/auth");
     }
-  })
+  });
 
   const handleGenerateRoomId = () => {
     const newRoomId = uuidv4();
     setRoomId(newRoomId);
   };
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-    console.log("Submit clicked!")
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("Submit clicked!");
     event.preventDefault();
     // Handle room creation here, you can use roomName and roomId
-    console.log('Room Name:', roomName);
-    console.log('Room ID:', roomId);
-    if(!roomId || !roomName){
-        alert("Fill name and id")
-        return;
+    console.log("Room Name:", roomName);
+    console.log("Room ID:", roomId);
+    if (!roomId || !roomName) {
+      alert("Fill name and id");
+      return;
     }
     const serverUrl = import.meta.env.VITE_REACT_APP_SERVER_URL;
-    let url = ""
-    if(serverUrl === "://localhost:8080"){
-      url = `http${serverUrl}`
+    let url = "";
+    if (serverUrl === "://localhost:8080") {
+      url = `http${serverUrl}`;
+    } else {
+      url = `https${serverUrl}`;
     }
-    else{
-      url = `https${serverUrl}`
-    }
-    try{
-      const response = await fetch(`${url}/create`,{
-        method:"POST",
+    try {
+      const response = await fetch(`${url}/create`, {
+        method: "POST",
         headers: {
-            "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            username,
-            roomName,
-            roomId
-        })
-      })
-      if(response.ok){
+          username,
+          roomName,
+          roomId,
+        }),
+      });
+      if (response.ok) {
         //Add a toast here
-        setRoomID(roomId)
-        Navigate("/join")
+        setRoomID(roomId);
+        Navigate("/join");
+      } else {
+        alert("Error creating room");
       }
-      else{
-        alert("Error creating room")
-      }
-    }
-    catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -91,14 +86,14 @@ const CreateRoom: React.FC = () => {
             Generate Room ID
           </button>
         </div>
-        {roomId && 
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-blue-100 font-semibold px-4 py-2 rounded"
-        >
-          Create Room
-        </button>
-        }
+        {roomId && (
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-blue-100 font-semibold px-4 py-2 rounded"
+          >
+            Create Room
+          </button>
+        )}
       </form>
     </div>
   );
