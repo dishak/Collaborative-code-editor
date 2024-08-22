@@ -24,15 +24,17 @@ const Auth: React.FC = () => {
     let url = "";
 
     if (import.meta.env.VITE_REACT_APP_SERVER_URL === "://localhost:8080") {
+      console.log(`The env is : ${import.meta.env.VITE_REACT_APP_SERVER_URL}`);
       url = isSignIn
         ? `http${import.meta.env.VITE_REACT_APP_SERVER_URL}/signin`
         : `http${import.meta.env.VITE_REACT_APP_SERVER_URL}/signup`;
     } else {
+      console.log(`The env is : ${import.meta.env.VITE_REACT_APP_SERVER_URL}`);
       url = isSignIn
         ? `https${import.meta.env.VITE_REACT_APP_SERVER_URL}/signin`
         : `https${import.meta.env.VITE_REACT_APP_SERVER_URL}/signup`;
     }
-
+    console.log(`The url is : ${url}`);
     try {
       const response = await fetch(url, {
         method: "POST",

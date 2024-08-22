@@ -13,15 +13,17 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
+      target: prod # Use 'prod' for production or 'dev' for development
     container_name: server
     depends_on:
       - redis
+      - mongo
     ports:
       - "8080:8080"
     volumes:
-      - ./Server:/src
-    environment:
-      - REDIS_URL=${REDIS_URL}
+      - ./Server/src:/src/src
+    env_file:
+      - ./Server/.env
 
   worker:
     build:
@@ -31,9 +33,9 @@ services:
     depends_on:
       - redis
     volumes:
-      - ./Worker:/src
-    environment:
-      - REDIS_URL=${REDIS_URL}
+      - ./Worker/src:/src/src
+    env_file:
+      - ./Worker/.env
 
   client:
     build:
@@ -46,8 +48,17 @@ services:
       - "5173:5173"
     volumes:
       - ./Client:/src
-    environment:
-      - VITE_REACT_APP_SERVER_URL=${VITE_REACT_APP_SERVER_URL}
+    env_file:
+      - ./Client/.env
+
+  mongo:
+    image: "mongo:latest"
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
 
 volumes:
   redis-data:
+  mongo-data:

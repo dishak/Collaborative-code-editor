@@ -310,7 +310,6 @@ app.post("/signin", async (req: Request, res: Response) => {
 app.post("/signup", async (req: Request, res: Response) => {
   await ConnectDB();
   const { username, password } = req.body;
-
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
