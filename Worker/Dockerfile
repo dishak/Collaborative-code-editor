@@ -1,5 +1,5 @@
 # Use an official node image as the base image
-FROM node:18
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /src
@@ -12,6 +12,10 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
+COPY entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
 
 # Command to run the worker
 CMD ["npm", "start"]

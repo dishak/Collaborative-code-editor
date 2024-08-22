@@ -1,5 +1,5 @@
 # Use an official node image as the base image
-FROM node:18
+FROM node:18-alpine AS base
 
 # Set the working directory
 WORKDIR /src
@@ -16,5 +16,19 @@ COPY . .
 # Expose the port the server runs on
 EXPOSE 8080
 
-# Command to run the server
+COPY entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
+
+# Development stage
+FROM base AS dev
+
+EXPOSE 8080
+CMD ["npm", "run", "dev"]
+
+
+# Production stage
+FROM base AS prod
+
+EXPOSE 8080
 CMD ["npm", "start"]

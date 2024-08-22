@@ -1,5 +1,5 @@
 # Use an official node image as the base image
-FROM node:18
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /src
@@ -15,6 +15,10 @@ COPY . .
 
 # Expose the port the app runs on
 EXPOSE 5173
+
+COPY entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT ["entrypoint.sh"]
 
 # Command to run the app in development mode
 CMD ["npm", "run", "dev"]

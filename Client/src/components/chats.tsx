@@ -23,14 +23,25 @@ const Chats: React.FC<chatProps> = ({ chats, addChat }) => {
   };
 
   return (
-    <Flex direction="column" p="4" bg="blue.900" gap='40px' color="blue.200" h="80vh">
-      <Box flex="1" overflowY="auto" css={{
+    <Flex
+      direction="column"
+      p="4"
+      bg="blue.900"
+      gap="40px"
+      color="blue.200"
+      h="80vh"
+    >
+      <Box
+        flex="1"
+        overflowY="auto"
+        css={{
           "&::-webkit-scrollbar": {
-            display: "none"
+            display: "none",
           },
           "-ms-overflow-style": "none",
-          scrollbarWidth: "none"
-        }}>
+          scrollbarWidth: "none",
+        }}
+      >
         {chats.map((chat, index) => (
           <Box key={index} p="3" bg="gray.800" borderRadius="md" mb="3">
             <strong>{chat.username}</strong>

@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   redis:
-    image: "redis:latest"
+    image: "redis:alpine"
     container_name: redis
     ports:
       - "6379:6379"
@@ -13,13 +13,17 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
+      target: prod # Use 'prod' for production or 'dev' for development
     container_name: server
     depends_on:
       - redis
+      - mongo
     ports:
       - "8080:8080"
     volumes:
-      - ./Server:/src
+      - ./Server/src:/src/src
+    env_file:
+      - ./Server/.env
 
   worker:
     build:
@@ -29,7 +33,9 @@ services:
     depends_on:
       - redis
     volumes:
-      - ./Worker:/src
+      - ./Worker/src:/src/src
+    env_file:
+      - ./Worker/.env
 
   client:
     build:
@@ -41,7 +47,18 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./Client:/app
+      - ./Client:/src
+    env_file:
+      - ./Client/.env
+
+  mongo:
+    image: "mongo:latest"
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
 
 volumes:
   redis-data:
+  mongo-data:
